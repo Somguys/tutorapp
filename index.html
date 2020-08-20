@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Tutor Session Tracker</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<div id="container" >
+<div id="myDIV" class="header">
+  <h2 style="margin:10px">Tutor Session Tracker</h2>
+  <div "inputs">
+  <input type="Date" id="myInput" placeholder="Date..">
+  <input type="time" id="myInput1" placeholder="Start Time..">
+  <input type="time" id="myInput2" placeholder="End Time..">
+  <span onclick="newElement()" class="addBtn">Add</span>
+  <button onclick="calculate()" class="addBtn">Calculate</button>
+
+  </div>
+</div>
+
+<ul id="myUL">
+  <li>Date: 2020-08-19 Time: 20:00 to 21:00 Session: 2 Hours</li>
+
+</ul>
+</div>
+<script>
+
+  const hours = [0,0];
+// Create a "close" button and append it to each list item
+var myNodelist = document.getElementsByTagName("LI");
+var i;
+for (i = 0; i < myNodelist.length; i++) {
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  myNodelist[i].appendChild(span);
+}
+
+// Click on a close button to hide the current list item
+var close = document.getElementsByClassName("close");
+var i;
+for (i = 0; i < close.length; i++) {
+  close[i].onclick = function() {
+    var div = this.parentElement;
+    div.style.display = "none";
+  }
+}
+
+// Add a "checked" symbol when clicking on a list item
+var list = document.querySelector('ul');
+list.addEventListener('click', function(ev) {
+  if (ev.target.tagName === 'LI') {
+    ev.target.classList.toggle('checked');
+  }
+}, false);
+
+function HHmmtoMinutes(num){
+
+var a = num.split(':'); // split it at the colons
+
+// Hours are worth 60 minutes.
+var minutes = (+a[0]) * 60 + (+a[1]);
+return minutes;
+}
+
+function diff_minutes(num2, num1) 
+ {
+num11 =HHmmtoMinutes(num1);
+num22 = HHmmtoMinutes(num2);
+
+  var diff =(num22 - num11) /60;
+  var min = diff.toFixed(2);
+  return min;
+  
+ }
+
+ function calculate(){
+  sum = 0;
+  var arrayOfNumbers = hours.map(Number);
+  sum = arrayOfNumbers.reduce((pv, cv) => pv + cv, 0);
+  var li = document.createElement("li");
+  var t = document.createTextNode("Your Total is: "+ sum+ " Hours ");
+  li.appendChild(t);
+  document.getElementById("myUL").appendChild(li);
+  sum = 0;
+  sum = hours.reduce((pv, cv) => pv + cv, 0);
+
+}
+
+// Create a new list item when clicking on the "Add" button
+function newElement() {
+  var li = document.createElement("li");
+  var inputValue = document.getElementById("myInput").value;
+  var inputValue1 = document.getElementById("myInput1").value;
+  var inputValue2 = document.getElementById("myInput2").value;
+
+  var hour = diff_minutes(inputValue2,inputValue1);
+
+  var t = document.createTextNode("Date: " + inputValue +"  Time: " + inputValue1 +" to "+inputValue2 + " Session: " + hour+ " Hours");
+  console.log(hour);
+  hours.push(hour);
+  console.log(hours);
+  li.appendChild(t);
+  if (inputValue === '') {
+    alert("You must enter a date!");
+  } else {
+    document.getElementById("myUL").appendChild(li);
+  }
+  //document.getElementById("myInput").value = "";
+
+  var span = document.createElement("SPAN");
+  var txt = document.createTextNode("\u00D7");
+  span.className = "close";
+  span.appendChild(txt);
+  li.appendChild(span);
+
+  for (i = 0; i < close.length; i++) {
+    close[i].onclick = function() {
+      var div = this.parentElement;
+      div.style.display = "none";
+    }
+  }
+}
+
+
+
+</script>
+
+
+
+</body>
+</html>
